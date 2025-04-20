@@ -5,6 +5,7 @@ Translates string resources in Android applications. Uses AI API to translate st
 of the world.
 
 > 🛠️ **The project is in active development.**
+> At the moment only Android projects.
 
 # Applications using AI Translator
 
