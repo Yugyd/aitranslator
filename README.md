@@ -17,23 +17,34 @@ Coming soon
 
 # Debug
 
-- Make a replacement in the files `is_debug = True` [Temporary solution]
+- Make a replacement in the files `_is_debug = True` [Temporary solution]
 
-# Run
+# Configure for Android
 
 ### Step 1: Add Configuration File to Android Project
 
 - Add the `default-translator-config.yml` file to the root of your Android project.
 - Configure the values in the configuration file. [Configuration example](assets/default-translator-config.yml)
     - `{config}` - basic configuration
-        - `{appDescription}` - application description
-        - `{sourceLanguage}` - source language
-        - `{targetLanguages}` - target language
-        - `{aiProvider}` - AI provider
-        - `{aiKey}` - API key for AI
-        - `{aiFolder}` - project ID in the cloud for AI
-        - `{excludeTranslated}` - exclude already translated strings
-    - `{exclude}` - exclude from translation
+        - `{appDescription}` - application description. String with the application description.
+            - Example: `Quiz Platform is a platform for creating and playing quizzes.`
+        - `{sourceLanguage}` - source language. String with the language code.
+            - Example: `en` for English, etc.
+        - `{targetLanguages}` - target language. Array of languages to translate into.
+            - Example: `["en", "ru", "fr"]`
+        - `{aiProvider}` - AI provider. Available options:
+            - `openai` - OpenAI
+            - `yandex` - Yandex GPT
+        - `{aiKey}` - API key for AI. String with the API key.
+            - Example: `sk-...` for OpenAI, `AQAAAA...` for Yandex GPT.
+        - `{aiFolder}` - project ID in the cloud for AI. Only for Yandex GPT. String with the project ID.
+            - Example: `b1g2...` for Yandex GPT.
+        - `{aiModel}` - AI model. Available options:
+            - `gpt-4.1-mini` - OpenAI GPT-4.1-Mini, etc. Default is `gpt-4.1-mini`.
+            - `yandexgpt-lite` - Latest Yandex GPT, etc. Default is `yandexgpt-lite`.
+        - `{excludeTranslated}` - exclude already translated strings. Boolean value.
+    - `{exclude}` - exclude from translation. Array of strings to exclude from translation.
+        - Example: `["app_name", "app_description"]`
 
 ### Step 2: Add file with prompt (optional)
 
@@ -49,14 +60,20 @@ Coming soon
 
 - Add the `translator-config.yml` file to the root of the module.
 - Configure the values in the configuration file. [Configuration example](assets/translator-config.yml)
-    - `{config}` - base configuration
-        - `{moduleDescription}` - module or screen description
-        - `{excludeTranslated}` - exclude already translated strings
-    - `{exclude}` - exclude from translation
+    - `{config}` - base configuration for the module
+        - `{moduleDescription}` - module or screen description. String with the module description.
+            - Example: `Correct screen for the quiz platform.`
+        - `{excludeTranslated}` - exclude already translated strings. Boolean value.
+    - `{exclude}` - exclude from translation. Array of strings to exclude from translation.
+        - Example: `["app_name", "app_description"]`
 
 ### Step 4: Run script
 
 - `python3 aitranslator.py --project_dir=<path_to_project>`
+
+# Configure for iOS
+
+Coming soon
 
 # License
 

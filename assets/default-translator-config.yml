@@ -19,6 +19,7 @@ config:
   aiProvider": "yandex"
   aiKey: "AI_API_KEY"
   aiFolder: "AI_FOLDER"
+  aiModel: "AI_MODEL"
   excludeTranslated: true
 
 exclude:

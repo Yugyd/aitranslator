@@ -20,7 +20,7 @@ from init import init
 from configure import configure
 from execute import execute
 
-is_debug = False
+_is_debug = False
 
 
 def main(project_dir):
