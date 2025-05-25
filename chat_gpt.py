@@ -12,66 +12,63 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from yandex_cloud_ml_sdk import YCloudML
+from openai import OpenAI
 
-default_ai_model = "yandexgpt-lite"
-gpt_temperature = 0.5
-
+default_ai_model = "gpt-4.1-mini"
+gpt_temperature = 0.7
 _is_debug = False
 
 
-def validate_yandex_gpt(ai_key, ai_folder, ai_model):
+def validate_openai_gpt(ai_key, ai_model):
     if _is_debug:
-        print("Initializing YandexGPT client!")
+        print("Initializing OpenAI client!")
 
-    client = YCloudML(
-        auth=ai_key,
-        folder_id=ai_folder
-    )
+    client = OpenAI(api_key=ai_key)
 
     try:
         if ai_model is None or ai_model == "":
             ai_model = default_ai_model
 
-        model = client.models.completions(ai_model)
-        model = model.configure(temperature=gpt_temperature)
-
-        result = model.run("Ping")
+        response = client.chat.completions.create(
+            model=ai_model,
+            temperature=gpt_temperature,
+            messages=[{"role": "user", "content": "Ping"}]
+        )
 
         # Check if the result is empty or unauthorized
-        if not result:
+        if not response.choices:
             raise PermissionError("Unauthorized: Invalid API key or access denied.")
         else:
             if _is_debug:
                 print("Client initialized successfully!")
     except Exception as e:
-        raise ValueError(f"Error: Failed to authenticate with YandexGPT API. Exception: {e}")
+        raise ValueError(f"Error: Failed to authenticate with OpenAI API. Exception: {e}")
 
 
-def translate_yandex_gpt(ai_key, ai_folder, ai_model, prompt):
+def translate_openai_gpt(ai_key, ai_model, prompt):
     if _is_debug:
-        print("Translating via Yandex GPT...")
+        print("Translating via OpenAI GPT...")
 
-    client = YCloudML(
-        auth=ai_key,
-        folder_id=ai_folder
-    )
+    client = OpenAI(api_key=ai_key)
 
     try:
         if ai_model is None or ai_model == "":
             ai_model = default_ai_model
-        model = client.models.completions(ai_model)
-        model = model.configure(temperature=gpt_temperature)
 
-        result = model.run(
-            f"You are a professional translator specialized in UI/UX localization.\n{prompt}"
+        response = client.chat.completions.create(
+            model=ai_model,
+            temperature=gpt_temperature,
+            messages=[
+                {"role": "developer",
+                 "content": "You are a professional translator specialized in UI/UX localization."},
+                {"role": "user", "content": prompt}
+            ]
         )
 
-        completions = list(result)
-        if not completions:
+        if not response.choices:
             raise ValueError("No translation response received.")
 
-        return completions[0].text
+        return response.choices[0].message.content
     except Exception as e:
         if "401" in str(e) or "unauthorized" in str(e).lower():
             raise PermissionError("Unauthorized: Invalid API key or access denied.")

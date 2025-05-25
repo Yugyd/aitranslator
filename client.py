@@ -11,31 +11,29 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+from ai_client import validate_ai, translate_ai
 from models import Configuration
-from yandex_gpt import validate_yandex_gpt, translate_yandex_gpt
 import json
 import pycountry
 import os
 
-is_debug = False
+_is_debug = False
 
 
 def validate(config: Configuration):
-    if is_debug:
+    if _is_debug:
         print("Validate!")
 
-    if config.ai_provider.lower() != "yandex":
-        raise ValueError("Error: Unsupported AI provider.")
-
-    validate_yandex_gpt(
+    validate_ai(
+        ai_provider=config.ai_provider,
         ai_key=config.ai_key,
-        ai_folder=config.ai_folder
+        ai_folder=config.ai_folder,
+        ai_model=config.ai_model
     )
 
 
 def translate(prompt_path, global_config, module_description, target_language, words):
-    if is_debug:
+    if _is_debug:
         print("Translate!")
 
     prompt = __generate_prompt__(
@@ -47,9 +45,11 @@ def translate(prompt_path, global_config, module_description, target_language, w
         words=words
     )
 
-    result = translate_yandex_gpt(
+    result = translate_ai(
+        ai_provider=global_config.ai_provider,
         ai_key=global_config.ai_key,
         ai_folder=global_config.ai_folder,
+        ai_model=global_config.ai_model,
         prompt=prompt
     )
 
@@ -57,7 +57,7 @@ def translate(prompt_path, global_config, module_description, target_language, w
 
 
 def parse_(response_text):
-    if is_debug:
+    if _is_debug:
         print(f"Parsing GPT response: {response_text}")
 
     try:

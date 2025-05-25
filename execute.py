@@ -20,7 +20,7 @@ from client import translate
 from models import Configuration
 import html
 
-is_debug = False
+_is_debug = False
 
 
 def execute(prompt_path, configuration, execution_graph):
@@ -53,7 +53,7 @@ def execute(prompt_path, configuration, execution_graph):
 
 
 def get_words_from_strings_file(module):
-    if is_debug:
+    if _is_debug:
         print("Get words from strings file!")
 
     strings_path = module["strings"]
@@ -74,7 +74,7 @@ def get_words_from_strings_file(module):
             if value:
                 cleaned_value = " ".join(value.split())
                 words.append({"key": key, "value": cleaned_value})
-        if is_debug:
+        if _is_debug:
             print(f"Collected {len(words)} string(s) from {strings_path}")
         return words
 
@@ -89,14 +89,14 @@ def get_words_from_strings_file(module):
 
 
 def get_languages(global_config: Configuration):
-    if is_debug:
+    if _is_debug:
         print("Get languages!")
 
     return global_config.target_languages
 
 
 def make_language_dir_if_not_exists(language, module):
-    if is_debug:
+    if _is_debug:
         print("Make language dir!")
 
     strings_path = module["strings"]
@@ -106,17 +106,17 @@ def make_language_dir_if_not_exists(language, module):
 
     if not os.path.exists(lang_dir_path):
         os.makedirs(lang_dir_path)
-        if is_debug:
+        if _is_debug:
             print(f"Created directory: {lang_dir_path}")
     else:
-        if is_debug:
+        if _is_debug:
             print(f"Directory already exists: {lang_dir_path}")
 
     return lang_dir_path
 
 
 def translate_all_words_to_language(prompt_path, words, target_language, global_config, module_config):
-    if is_debug:
+    if _is_debug:
         print("Translate all words to language!")
 
     module_description = module_config.module_description if module_config else ""
@@ -129,7 +129,7 @@ def translate_all_words_to_language(prompt_path, words, target_language, global_
         words=words
     )
 
-    if is_debug:
+    if _is_debug:
         print(f"Translated count {len(translated_words)} string(s)")
 
     for word in translated_words:
@@ -154,7 +154,7 @@ def escape_android_string(value):
 
 
 def write_words_to_strings_file(lang_dir_path, words):
-    if is_debug:
+    if _is_debug:
         print("Write words to strings file!")
 
     # Path to strings.xml
@@ -179,7 +179,7 @@ def write_words_to_strings_file(lang_dir_path, words):
         f.write(pretty_xml)
 
     # Ensure the file is closed properly
-    if is_debug:
+    if _is_debug:
         print(f"Wrote {len(words)} translated strings to {strings_file_path}")
 
 

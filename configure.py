@@ -16,7 +16,7 @@ import os
 import yaml
 from models import ModuleConfiguration
 
-is_debug = False
+_is_debug = False
 
 
 def configure(project_dir):
@@ -30,7 +30,7 @@ def configure(project_dir):
 
 
 def find_all_modules(project_dir):
-    if is_debug:
+    if _is_debug:
         print("Find all modules!")
 
     all_strings = find_all_strings_files(project_dir)
@@ -40,7 +40,7 @@ def find_all_modules(project_dir):
 
 
 def find_all_strings_files(project_dir):
-    if is_debug:
+    if _is_debug:
         print("Find all strings files!")
 
     strings_files = []
@@ -53,14 +53,14 @@ def find_all_strings_files(project_dir):
                 if values_dir == "values":
                     strings_files.append(os.path.join(root, file))
 
-    if is_debug:
+    if _is_debug:
         print(f"Found {len(strings_files)} strings.xml files.")
 
     return strings_files
 
 
 def find_all_configuration_files(project_dir):
-    if is_debug:
+    if _is_debug:
         print("Find all configuration files!")
 
     config_files = []
@@ -69,7 +69,7 @@ def find_all_configuration_files(project_dir):
             if file == "translator-config.yml":
                 config_files.append(os.path.join(root, file))
 
-    if is_debug:
+    if _is_debug:
         print(f"Found {len(config_files)} translator-config.yml files.")
 
     return config_files
@@ -85,7 +85,7 @@ def find_module_root(strings_file: str) -> str:
 
 
 def build_execution_graph(all_strings_files, all_configurations_files):
-    if is_debug:
+    if _is_debug:
         print("Building execution graph!")
 
     execution_graph = []
@@ -114,7 +114,7 @@ def build_execution_graph(all_strings_files, all_configurations_files):
         )
 
     for entry in execution_graph:
-        if is_debug:
+        if _is_debug:
             print(f"Module: {entry['strings']}, Configuration: {entry['configuration']}, Path: {entry['module_path']}")
 
     return execution_graph

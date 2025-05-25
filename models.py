@@ -14,7 +14,7 @@
 
 import json
 
-is_debug = False
+_is_debug = False
 
 
 class Configuration:
@@ -28,18 +28,19 @@ class Configuration:
         self.ai_provider = config_data["config"].get("aiProvider", "")
         self.ai_key = config_data["config"].get("aiKey", "")
         self.ai_folder = config_data["config"].get("aiFolder", "")
+        self.ai_model = config_data["config"].get("aiModel", "")
 
         self.exclude = config_data.get("exclude", [])
 
         self.validate()
 
     def validate(self):
-        if not self.ai_provider or not self.ai_key or not self.ai_folder:
+        if not self.ai_provider or not self.ai_key:
             raise ValueError("Error: Missing required AI settings in configuration file.")
         elif not self.source_language or not self.target_languages:
             raise ValueError("Error: Missing required config settings in configuration file.")
 
-        if is_debug:
+        if _is_debug:
             print("Configuration file successfully parsed and validated.")
 
     def to_json(self):

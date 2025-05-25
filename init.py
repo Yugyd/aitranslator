@@ -18,7 +18,7 @@ import yaml
 from client import validate
 from models import Configuration
 
-is_debug = False
+_is_debug = False
 
 
 def init(project_dir):
@@ -36,14 +36,14 @@ def init(project_dir):
 
 
 def find_configuration_file(project_dir):
-    if is_debug:
+    if _is_debug:
         print("Find configuration file!")
 
     config_filename = "default-translator-config.yml"
     config_path = os.path.join(project_dir, config_filename)
 
     if os.path.exists(config_path):
-        if is_debug:
+        if _is_debug:
             print(f"Configuration file found: {config_path}")
 
         return config_path
@@ -52,14 +52,14 @@ def find_configuration_file(project_dir):
 
 
 def find_prompt_file(project_dir):
-    if is_debug:
+    if _is_debug:
         print("Find prompt file!")
 
     prompt_filename = "default-translator-prompt.txt"
     prompt_path = os.path.join(project_dir, prompt_filename)
 
     if os.path.exists(prompt_path):
-        if is_debug:
+        if _is_debug:
             print(f"Prompt file found: {prompt_path}")
 
         return prompt_path
@@ -68,7 +68,7 @@ def find_prompt_file(project_dir):
 
 
 def parse_configuration_file(configuration_file):
-    if is_debug:
+    if _is_debug:
         print("Parse configuration file!")
 
     if not os.path.exists(configuration_file):
@@ -82,14 +82,14 @@ def parse_configuration_file(configuration_file):
 
     config = Configuration(config_data)
 
-    if is_debug:
+    if _is_debug:
         print(config.to_json())
 
     return config
 
 
 def init_client(configuration_config):
-    if is_debug:
+    if _is_debug:
         print("Init client!")
 
     validate(configuration_config)
